@@ -1,8 +1,61 @@
+body{
+        background-color:#222422;
+        color:white;
+}
+
+.line{
+        width:100%;
+        margin: 10px 0px 0px 10px;
+
+    
+}
+
+#header{
+        left:0px;
+        right:0px;
+        width:50%;
+        margin:auto;
+}
+
+#commandLine{
+        font-size:24px;
+}
+
+#command{
+        margin: 10px 0px 0px 10px;
+        background-color:#222422;
+        border-style:none;
+        font-size:24px;
+        color:white;
+}
+#command:focus{
+        border-style:none;
+        outline:none;
+}
+
+#tomato{
+
+        position:fixed;
+        top:10px;
+        left:20px;
+        background-color:#565a56;
+        font-weight:1000;
+        padding: 5px 50px;
+        box-shadow:5px 5px black;
+        visibility:hidden;
+
+}
+
+#elapsedTime{
+        text-align:center;
+        padding-top:5px;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
   margin-top: 60px;
 }

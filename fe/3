@@ -1,0 +1,120 @@
+import './style.css'
+
+const commandBox = document.getElementById('command')
+const response = document.getElementById('response')
+
+const data={
+        root:'comvest'
+}
+
+const commands=['progresso','arvore']
+const backEnd = 'http://localhost:3002/' 
+
+commandBox.addEventListener('keydown',(e)=>{
+
+        if(e.key=='Enter'){
+                const command = commandBox.value
+                commandBox.value=""
+                
+                const parsed=parseCommand(command);
+
+                console.log(parsed)
+
+                switch(parsed[0]){
+                        case 0:
+                                progresso('comvest')
+                                break;
+                        case -1:
+                                printCommand('Comando Não Encontrado')
+                                break
+                        default:
+                                printCommand('Comando Não Encontrado')
+                                break;
+                }
+        }
+
+})
+
+
+//This function measures the progress of some task tree given some root
+//The syntax is 'progresso name_root' 
+const progresso = async (root) => {
+       
+        const response = await fetch(backEnd+'colheita',{
+                method:'POST',
+                headers:{
+                        'Content-Type':'application/json'
+                },
+                body:JSON.stringify({root:root})
+        })
+
+        const json = await response.json();
+
+        printCommand(JSON.stringify(json))
+}
+
+//returns an array with the the first element being the commandNumber
+//the following elements being arguments
+//if the command does not exist, it returns -1 for the commandNumber
+const parseCommand = (raw) =>{
+
+        let returnMe=[];
+        
+        let spaces = raw.indexOf(' ')
+
+        // no arguments
+        if(spaces==-1){
+
+                const commandNumber=commands.findIndex((n,i,arr)=>{
+                        return n==raw
+                })
+
+                returnMe.push(commandNumber)
+
+                return returnMe
+        }
+
+        const commandNumber=commands.findIndex((n,i,arr)=>{
+                return n==raw.substring(0,spaces)
+        })
+        
+        returnMe.push(commandNumber)
+       
+        let n=0;
+        while(spaces!=-1){
+                const pSpaces=spaces
+                spaces=raw.indexOf(' ',pSpaces+1)
+
+                if(spaces!=-1){
+                        returnMe.push(raw.substring(pSpaces,spaces))
+                }else
+                        returnMe.push(raw.substring(pSpaces))
+        }
+        
+        return returnMe
+
+}
+
+const printCommand = (result) =>{
+
+        const newNode = document.createTextNode('->'+result)
+        const newElement = document.createElement('div')
+        newElement.className='line'
+        newElement.appendChild(newNode)
+
+        response.appendChild(newElement)
+}
+
+const list = async ()=>{
+
+        const response = await fetch('http://localhost:3002/colheita',{
+                method:'POST',     
+                body:JSON.stringify(data),
+                headers:{
+                        'Content-Type':'application/json'
+                }
+})
+
+        const json = await response.json()
+        console.log(json)
+}
